@@ -1,0 +1,69 @@
+args and kwargs are convention names, just * / ** matter
+
+def print_args(d1, d2, d3):
+    print(d1, d2, d3)
+
+data = ('foo', 'bar', 'baz')
+print_args(*data)    #MAPEANDO EN EL CALL                #si hacemos esto sin * dara typeerror required 2 positional arguments
+>>> foo bar baz
+
+#basicamente *mapea un iterable a varios argumentos de una funcion
+
+
+def print_args(*args):  #VS MAPEADO EN LA DEFINICION!
+    for arg in args:
+        print(arg)
+print_args(1, 2, 3)
+>>> 1
+>>> 2
+>>> 3
+
+def print_args(*args):
+    print(args)
+print_args(1, 2, 3)
+>>> (1, 2, 3)
+
+def print_args(a, b, c, *args):    #taking 3 first args as positional args and COLLAPSING ALL REMAINING ONES into args keyword
+    print(a, b, c, args)
+print_args(1, 2, 3, 4, 5)
+>>> 1 2 3 (4, 5)
+
+
+def print_kwargs(**kwargs):   #mapea key values en vez de simplemente valores en un ()
+    print(kwargs)
+print_kwargs(foo='bar', hello='world')
+>>> {'foo': 'bar', 'hello': 'world'}
+
+def print_kwargs(latitude=None, longitude=None):
+    print(latitude, longitude)
+
+data = {'latitude': 0.00, 'longitude': 1.00}
+print_data(**data)
+>>> 0.00 1.00
+
+def print_kwargs(lat=None, long=None, **kwargs):
+    print(lat, long, kwargs)
+print_kwargs(1, 2, data='other')
+>>> 1 2 {'data': 'other'}
+
+
+
+class Base(object):
+    def __init__(self, *args, data=None, **kwargs):
+        print('data is: ', data)
+
+class MyBaseObject(Base):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+class MyObject(MyBaseObject):
+    def __init__(self, *args, game=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        print('game is: ', game)
+
+my_data = {'game': 'UT', 'data': '3d'}        #usandolos como fallback para pasar y captar todos los args en todos los pasos de inheritance
+MyObject(**my_data)
+>>> data is: 3d
+>>> game is: UT
+
+https://godjango.com/105-understanding-args-and-kwargs/
